@@ -5,8 +5,7 @@ public class Suma {
 
   class SumaTres extends Thread {
     public void run() {
-      x++
-      ;
+      x++;
     }
   }
 
