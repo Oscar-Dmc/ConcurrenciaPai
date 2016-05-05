@@ -1,39 +1,72 @@
+
 package es.ull.pai.presentacion.atomicidad;
 
 public class Deadlock {
-  static class Friend {
-    private final String name;
-
-    public Friend(String name) {
-      this.name = name;
-    }
-
-    public String getName() {
-      return this.name;
-    }
-
-    public synchronized void bow(Friend bower) {
-      System.out.format("%s: %s" + "  has bowed to me!%n", this.name, bower.getName());
-      bower.bowBack(this);
-    }
-
-    public synchronized void bowBack(Friend bower) {
-      System.out.format("%s: %s" + " has bowed back to me!%n", this.name, bower.getName());
-    }
-  }
-
   public static void main(String[] args) {
-    final Friend manuel = new Friend("Manuel");
-    final Friend carlos = new Friend("Carlos");
-    new Thread(new Runnable() {
+    Deadlock test = new Deadlock();
+
+    final A a = test.new A();
+    final B b = test.new B();
+
+    // Thread-1
+    Runnable block1 = new Runnable() {
       public void run() {
-        manuel.bow(carlos);
+        synchronized (b) {
+          /*try {
+            // Adding delay so that both threads can start trying to
+            // lock resources
+            Thread.sleep(100);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }*/
+          // Thread-1 have A but need B also
+          synchronized (a) {
+            System.out.println("In block 1");
+          }
+        }
       }
-    }).start();
-    new Thread(new Runnable() {
+    };
+
+    // Thread-2
+    Runnable block2 = new Runnable() {
       public void run() {
-        carlos.bow(manuel);
+        synchronized (b) {
+          // Thread-2 have B but need A also
+          synchronized (a) {
+            System.out.println("In block 2");
+          }
+        }
       }
-    }).start();
+    };
+
+    new Thread(block1).start();
+    new Thread(block2).start();
   }
+
+  // Resource A
+  private class A {
+    private int i = 10;
+
+    public int getI() {
+      return i;
+    }
+
+    public void setI(int i) {
+      this.i = i;
+    }
+  }
+
+  // Resource B
+  private class B {
+    private int i = 20;
+
+    public int getI() {
+      return i;
+    }
+
+    public void setI(int i) {
+      this.i = i;
+    }
+  }
+
 }
