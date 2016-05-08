@@ -1,26 +1,33 @@
 package es.ull.pai.presentacion.concurrencia;
 
 public class Suma {
-  private int x = 0;
+  public static int x = 0;
 
   class SumaTres extends Thread {
     public void run() {
-      setX(getX() + 3);
+      x++;
     }
   }
 
   class SumaCinco extends Thread {
     public void run() {
-      setX(getX() + 5);
+      x++;
     }
   }
 
-  public Suma() {
+  public Suma() throws InterruptedException {
     SumaTres tres = new SumaTres();
     SumaCinco cinco = new SumaCinco();
 
     tres.start();
     cinco.start();
+    for (int i = 0; i < 10; i++) {
+      tres.join();
+      cinco.join();
+
+    }
+
+
   }
 
   public int getX() {
@@ -31,11 +38,9 @@ public class Suma {
     this.x = x;
   }
 
-  public static void main(String[] args) {
-    for (int i = 0; i < 10; i++) {
-      
-      Suma suma = new Suma();
-      System.out.println(suma.getX());
-    }
+  public static void main(String[] args) throws InterruptedException {
+    Suma suma = new Suma();
+    System.out.println("final: " + x);
+
   }
 }
