@@ -1,4 +1,4 @@
-package es.ull.pai.presentacion.atomicidad;
+package es.ull.pai.presentacion.concurrencia;
 
 public class Suma {
   private int x = 0;

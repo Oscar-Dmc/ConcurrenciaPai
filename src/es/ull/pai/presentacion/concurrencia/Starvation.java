@@ -1,4 +1,4 @@
-package es.ull.pai.presentacion.atomicidad;
+package es.ull.pai.presentacion.concurrencia;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

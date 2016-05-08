@@ -1,5 +1,5 @@
 
-package es.ull.pai.presentacion.atomicidad;
+package es.ull.pai.presentacion.concurrencia;
 
 public class Deadlock {
   public static void main(String[] args) {
@@ -11,16 +11,16 @@ public class Deadlock {
     // Thread-1
     Runnable block1 = new Runnable() {
       public void run() {
-        synchronized (b) {
-          /*try {
+        synchronized (a) {
+          try {
             // Adding delay so that both threads can start trying to
             // lock resources
             Thread.sleep(100);
           } catch (InterruptedException e) {
             e.printStackTrace();
-          }*/
+          }
           // Thread-1 have A but need B also
-          synchronized (a) {
+          synchronized (b) {
             System.out.println("In block 1");
           }
         }
